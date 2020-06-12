@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: web-shop
+  name: order-database-service
+  labels:
+    app: order-database-service
+spec:
+  ports:
+    - name: "http"
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+  selector:
+    app: order-database
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: web-shop
+  name: order-database
+  labels:
+    app: order-database
+spec:
+  selector:
+    matchLabels:
+      app: order-database
+  template:
+    metadata:
+      labels:
+        app: order-database
+    spec:
+      containers:
+        - image: mysql:5.6
+          name: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: order-database-secret
+                  key: password
+          ports:
+            - containerPort: 3306
+              name: mysql

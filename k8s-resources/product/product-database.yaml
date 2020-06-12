@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: web-shop
+  labels:
+    app: product-database-service
+  name: product-database-service
+spec:
+  ports:
+    - name: "http"
+      port: 27017
+      protocol: TCP
+      targetPort: 27017
+  selector:
+    app: product-database
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: web-shop
+  name: product-database
+  labels:
+    app: product-database
+spec:
+  selector:
+    matchLabels:
+      app: product-database
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: product-database
+      name: product-database
+    spec:
+      containers:
+        - image: mongo:3.6.18-xenial
+          name: mongodb-service
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: product-mongodb-secret
+                  key: username
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: product-mongodb-secret
+                  key: password

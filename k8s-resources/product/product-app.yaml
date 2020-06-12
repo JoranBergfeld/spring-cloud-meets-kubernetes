@@ -1,0 +1,47 @@
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: web-shop
+  name: product-app-service
+spec:
+  selector:
+    app: product-app
+  ports:
+    - protocol: TCP
+      port: 8003
+      nodePort: 30003
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: web-shop
+  name: product-app
+  labels:
+    app: product-app
+spec:
+  selector:
+    matchLabels:
+      app: product-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: product-app
+    spec:
+      containers:
+        - name: product-app
+          image: joranbergfeld/product-app:v1
+          ports:
+            - containerPort: 8003
+          env:
+            - name: MONGO_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: product-mongodb-secret
+                  key: username
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: product-mongodb-secret
+                  key: password

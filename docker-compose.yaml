@@ -1,0 +1,19 @@
+version: '3.0'
+services:
+  mongo-database:
+    image: mongo:latest
+    restart: always
+    ports:
+      - '27017-27019:27017-27019'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+  mysql-database:
+    image: mysql:5.6
+    restart: always
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql-init-data:/docker-entrypoint-initdb.d

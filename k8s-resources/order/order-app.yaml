@@ -1,0 +1,42 @@
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: web-shop
+  name: order-app-service
+spec:
+  selector:
+    app: order-app
+  ports:
+    - protocol: TCP
+      port: 8000
+      nodePort: 30000
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: web-shop
+  name: order-app
+  labels:
+    app: order-app
+spec:
+  selector:
+    matchLabels:
+      app: order-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: order-app
+    spec:
+      containers:
+        - name: order-app
+          image: joranbergfeld/order-app:v1
+          ports:
+            - containerPort: 8003
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: order-database-secret
+                  key: password

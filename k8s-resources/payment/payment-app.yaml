@@ -1,0 +1,42 @@
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: web-shop
+  name: payment-app-service
+spec:
+  selector:
+    app: payment-app
+  ports:
+    - protocol: TCP
+      port: 8002
+      nodePort: 30002
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: web-shop
+  name: payment-app
+  labels:
+    app: payment-app
+spec:
+  selector:
+    matchLabels:
+      app: payment-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: payment-app
+    spec:
+      containers:
+        - name: payment-app
+          image: joranbergfeld/payment-app:v1
+          ports:
+            - containerPort: 8002
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: payment-database-secret
+                  key: password

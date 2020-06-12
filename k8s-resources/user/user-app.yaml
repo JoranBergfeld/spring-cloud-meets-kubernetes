@@ -1,0 +1,36 @@
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: web-shop
+  name: user-app-service
+spec:
+  selector:
+    app: user-app
+  ports:
+    - protocol: TCP
+      port: 8001
+      nodePort: 30001
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: web-shop
+  name: user-app
+  labels:
+    app: user-app
+spec:
+  selector:
+    matchLabels:
+      app: user-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: user-app
+    spec:
+      containers:
+        - name: user-app
+          image: joranbergfeld/user-app:v1
+          ports:
+            - containerPort: 8001

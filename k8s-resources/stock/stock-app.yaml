@@ -1,0 +1,36 @@
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: web-shop
+  name: stock-app-service
+spec:
+  selector:
+    app: stock-app
+  ports:
+    - protocol: TCP
+      port: 8004
+      nodePort: 30004
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: web-shop
+  name: stock-app
+  labels:
+    app: stock-app
+spec:
+  selector:
+    matchLabels:
+      app: stock-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: stock-app
+    spec:
+      containers:
+        - name: stock-app
+          image: joranbergfeld/stock-app:v1
+          ports:
+            - containerPort: 8004

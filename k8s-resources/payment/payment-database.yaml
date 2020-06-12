@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: web-shop
+  name: payment-database-service
+  labels:
+    app: payment-database-service
+spec:
+  ports:
+    - name: "http"
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+  selector:
+    app: payment-database
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: web-shop
+  name: payment-database
+  labels:
+    app: payment-database
+spec:
+  selector:
+    matchLabels:
+      app: payment-database
+  template:
+    metadata:
+      labels:
+        app: payment-database
+    spec:
+      containers:
+        - image: mysql:5.6
+          name: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: payment-database-secret
+                  key: password
+          ports:
+            - containerPort: 3306
+              name: mysql
