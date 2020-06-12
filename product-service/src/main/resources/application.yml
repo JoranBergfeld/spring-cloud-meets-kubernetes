@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: product-service
+  data:
+    mongodb:
+      username: root
+      password: root
+      authentication-database: admin
+server:
+  port: 8003
+
+
+product.communication.endpoints:
+  stock: http://localhost:8004
