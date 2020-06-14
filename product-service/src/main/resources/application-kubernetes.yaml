@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: mongodb://product-database-service.web-shop.svc.cluster.local:3306
+
+product.communication.endpoints:
+  stock: http://stock-app-service.web-shop.svc.cluster.local:8004

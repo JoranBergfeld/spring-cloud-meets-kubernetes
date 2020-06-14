@@ -6,10 +6,12 @@ metadata:
   labels:
     app: stock-database-service
 spec:
+  type: NodePort
   ports:
     - name: "http"
       port: 3306
       protocol: TCP
+      nodePort: 31000
       targetPort: 3306
   selector:
     app: stock-database
@@ -33,6 +35,9 @@ spec:
       containers:
         - image: mysql:5.6
           name: mysql
+          volumeMounts:
+            - name: mysql-initdb
+              mountPath: /docker-entrypoint-initdb.d
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
@@ -42,3 +47,16 @@ spec:
           ports:
             - containerPort: 3306
               name: mysql
+      volumes:
+        - name: mysql-initdb
+          configMap:
+            name: stock-database-mysql-initdb-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: web-shop
+  name: stock-database-mysql-initdb-config
+data:
+  initdb.sql: |
+    CREATE DATABASE stocks;
