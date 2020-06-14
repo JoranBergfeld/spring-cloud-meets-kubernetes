@@ -35,12 +35,12 @@ spec:
           ports:
             - containerPort: 8003
           env:
-            - name: MONGO_USERNAME
+            - name: MONGODB_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: product-mongodb-secret
                   key: username
-            - name: MONGO_PASSWORD
+            - name: MONGODB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: product-mongodb-secret

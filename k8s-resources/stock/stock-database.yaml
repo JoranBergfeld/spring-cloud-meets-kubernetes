@@ -6,12 +6,10 @@ metadata:
   labels:
     app: stock-database-service
 spec:
-  type: NodePort
   ports:
     - name: "http"
       port: 3306
       protocol: TCP
-      nodePort: 31000
       targetPort: 3306
   selector:
     app: stock-database

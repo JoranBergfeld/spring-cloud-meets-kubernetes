@@ -1,6 +1,9 @@
 spring:
-  datasource:
-    url: mongodb://product-database-service.web-shop.svc.cluster.local:3306
+  data:
+    mongodb:
+      host: product-database-service.web-shop.svc.cluster.local:27017
+      username: ${MONGODB_USERNAME}
+      password: ${MONGODB_PASSWORD}
 
 product.communication.endpoints:
   stock: http://stock-app-service.web-shop.svc.cluster.local:8004
