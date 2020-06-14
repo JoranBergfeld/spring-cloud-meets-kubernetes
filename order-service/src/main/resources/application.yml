@@ -1,6 +1,4 @@
 spring:
-  application:
-    name: order-service
   jpa:
     show-sql: true
     generate-ddl: true

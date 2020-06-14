@@ -1,7 +1,4 @@
 spring:
-  application:
-    name: payment-service
-
   jpa:
     show-sql: true
     generate-ddl: true

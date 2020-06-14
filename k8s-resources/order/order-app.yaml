@@ -12,6 +12,17 @@ spec:
       nodePort: 30000
   type: NodePort
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: web-shop
+  name: order-app-config
+  labels:
+    app: order-app
+data:
+  application.properties: |
+    order.communication.endpoints.user=http://user-app-service.web-shop.svc.cluster.local:8001
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -31,7 +42,7 @@ spec:
     spec:
       containers:
         - name: order-app
-          image: joranbergfeld/order-app:v1
+          image: joranbergfeld/order-app:v2
           ports:
             - containerPort: 8003
           env:

@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: order-service
+
+  cloud:
+    kubernetes:
+      reload:
+        enabled: true
+      config:
+        enabled: true
+        name: order-app-config

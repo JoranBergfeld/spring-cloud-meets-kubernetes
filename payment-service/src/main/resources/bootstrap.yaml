@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: payment-service
+
+  cloud:
+    kubernetes:
+      reload:
+        enabled: true
