@@ -4,27 +4,28 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+@Service
 public class OrderService {
 
     private final RestTemplate restTemplate;
     private final EndpointsConfiguration endpointsConfiguration;
     private final OrderRepository orderRepository;
 
-    private final Logger logger;
+    private final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
     public OrderService(RestTemplate restTemplate,
-        EndpointsConfiguration endpointsConfiguration, OrderRepository orderRepository,
-        Logger logger) {
+        EndpointsConfiguration endpointsConfiguration, OrderRepository orderRepository) {
         this.restTemplate = restTemplate;
         this.endpointsConfiguration = endpointsConfiguration;
         this.orderRepository = orderRepository;
 
-        this.logger = logger;
         logger.info("Endpoints configured wired into OrderService: " + endpointsConfiguration.toString());
     }
 
