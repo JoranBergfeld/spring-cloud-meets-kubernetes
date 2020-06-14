@@ -6,8 +6,8 @@ function build-and-push-docker-for-service {
   VERSION=$3
   cd $MODULE_DIRECTORY
   docker build . -t $MODULE_NAME
-  docker tag $MODULE_NAME "$DOCKER_HUB_USERNAME"/$MODULE_NAME:v$VERSION
-  docker push "$DOCKER_HUB_USERNAME"/$MODULE_NAME:v$VERSION
+  docker tag $MODULE_NAME "$DOCKER_HUB_USERNAME"/$MODULE_NAME:$VERSION
+  docker push "$DOCKER_HUB_USERNAME"/$MODULE_NAME:$VERSION
   cd ..
 }
 
